@@ -42,3 +42,14 @@ with open("img/generat_edit_image.png", "wb") as image_file:
     image_file.write(generat_edit_image)  # write the image to the file
 im_edit = Image.open("img/generat_edit_image.png") 
 st.image(im_edit)
+
+col1, col2, col3 = st.columns(3)
+with col1:
+   st.header("Base")
+   st.image(im_base)
+with col2:
+   st.header("Mask")
+   st.image(im_mask)
+with col3:
+   st.header("Edit")
+   st.image(im_edit)
