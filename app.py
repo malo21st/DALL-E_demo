@@ -13,7 +13,7 @@ response = openai.Image.create(
 )
 image_url = response['data'][0]['url']
 generated_image = requests.get(image_url).content  # download the image
-with open("/img/generated_image.png", "wb") as image_file:
+with open("img/generated_image.png", "wb") as image_file:
     image_file.write(generated_image)  # write the image to the file
-im_base = Image.open("/img/generated_image.png") 
+im_base = Image.open("img/generated_image.png") 
 st.image(im_base)
