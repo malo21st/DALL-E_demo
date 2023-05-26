@@ -41,4 +41,4 @@ generat_edit_image = requests.get(image_url).content  # download the image
 with open("img/generat_edit_image.png", "wb") as image_file:
     image_file.write(generat_edit_image)  # write the image to the file
 im_edit = Image.open("img/generat_edit_image.png") 
-display(im_edit)
+st.image(im_edit)
