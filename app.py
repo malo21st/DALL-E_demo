@@ -7,11 +7,11 @@ import numpy as np
 OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
 
-def image_create(prompt):
+def image_create(prompt, size):
     response = openai.Image.create(
     prompt=prompt,
     n=1,
-    size="512x512"
+    size=size
     )
     image_url = response['data'][0]['url']
     generated_image = requests.get(image_url).content  # download the image
@@ -21,6 +21,10 @@ def image_create(prompt):
     return im_base
 
 prompt = st.sidebar.text_area('**prompt** (Required)', "", height=3)
+st.sidebar.markdown("**n** default:1 (Option)")
+size = st.radio("**size** default:1024x1024 (Option)",
+                 ('256x256', '512x512', '1024x1024'), index=1)
+
 if prompt:
     im_base = image_create(prompt)
 st.image(im_base)
