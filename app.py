@@ -22,7 +22,7 @@ def image_create(prompt, size):
 
 prompt = st.sidebar.text_input('**prompt** (Required)', "")
 size = st.sidebar.radio("**size** (Option)", index=1,
-                        ('256x256', '512x512', '1024x1024'))
+                        options=('256x256', '512x512', '1024x1024'))
 
 if prompt:
     im_base = image_create(prompt, size)
