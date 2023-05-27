@@ -18,9 +18,9 @@ if "edit" not in st.session_state:
     
 def image_create(prompt):
     response = openai.Image.create(
-    prompt=prompt,
-    n=1,
-    size='256x256'
+        prompt=prompt,
+        n=1,
+        size='256x256'
     )
     image_url = response['data'][0]['url']
     generated_image = requests.get(image_url).content  # download the image
@@ -29,11 +29,11 @@ def image_create(prompt):
 
 def image_edit(prompt):
     response = openai.Image.create_edit(
-      image = st.session_state["create"]["img"],
-      mask = st.session_state["mask"]["img"],
-      prompt = prompt,
-      n=1,
-      size='256x256'
+        image = st.session_state["create"]["img"],
+        mask = st.session_state["mask"]["img"],
+        prompt = prompt,
+        n=1,
+        size='256x256'
     )
     image_url = response['data'][0]['url']
     generated_image = requests.get(image_url).content  # download the image
