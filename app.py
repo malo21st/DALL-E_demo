@@ -8,13 +8,17 @@ import io
 OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
 im_init = Image.open("img_transparency.png")
+im_init_bytes = open("img_transparency.png", "rb")
 
-if "create" not in st.session_state:
-    st.session_state["create"] = {"is_first": True, "img": im_init}
-if "mask" not in st.session_state:
-    st.session_state["mask"] = {"is_first": True, "img": im_init}
-if "edit" not in st.session_state:
-    st.session_state["edit"] = {"is_first": True, "img": im_init}
+if "mode" not in st.session_state:
+    st.session_state["mode"] = dict()
+
+# if "create" not in st.session_state:
+#     st.session_state["create"] = {"is_first": True, "img": im_init}
+# if "mask" not in st.session_state:
+#     st.session_state["mask"] = {"is_first": True, "img": im_init}
+# if "edit" not in st.session_state:
+#     st.session_state["edit"] = {"is_first": True, "img": im_init}
 
 def image_to_bytes(img):
     img_bytes = io.BytesIO()
@@ -34,11 +38,11 @@ def image_create(prompt):
     return im_create
 
 def image_edit(prompt):
-    create_bytes = image_to_bytes(st.session_state["create"]["img"])
-    mask_bytes = image_to_bytes(st.session_state["mask"]["img"])
+    create_bytes = st.session_state["mode"].get("create", im_init_bytes)
+    mask_bytes = st.session_state["mode"].get("mask", im_init_bytes)
     response = openai.Image.create_edit(
         image = create_bytes,
-#         mask = mask_bytes,
+        mask = mask_bytes,
         prompt = prompt,
         n=1,
         size='256x256'
@@ -50,29 +54,29 @@ def image_edit(prompt):
 
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
-if st.session_state["create"]["is_first"] and prompt_create:
+if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
     im_create = image_create(prompt_create)
-    st.session_state["create"] = {"is_first": False, "img": im_create}
-if st.session_state["edit"]["is_first"] and not st.session_state["create"]["is_first"]:
+    st.session_state["mode"] = {"create": {"prompt": prompt_create, "img": im_create}
+if st.session_state["mode"].get("create", dict()).get("img", False):
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if prompt_edit:
         im_edit = image_edit(prompt_edit)
-        st.session_state["edit"] = {"is_first": False, "img": im_edit}
+        st.session_state["mode"] = {"edit": {"prompt": prompt_edit, "img": im_edit}
 
 col1, col2, col3 = st.columns(3)
 with col1:
    st.header("Create")
-   st.image(st.session_state["create"]["img"])
+   st.image(st.session_state["mode"].get("create", dict()).get("img", im_init))
 with col2:
    st.header("Mask")
-   st.image(st.session_state["mask"]["img"])
+   st.image(st.session_state["mode"].get("mask", dict()).get("img", im_init))
 with col3:
    st.header("Edit")
-   st.image(st.session_state["edit"]["img"])
+   st.image(st.session_state["mode"].get("edit", dict()).get("img", im_init))
     
-st.sidebar.write(st.session_state["create"]["is_first"])
-st.sidebar.write(st.session_state["mask"]["is_first"])
-st.sidebar.write(st.session_state["edit"]["is_first"])
+st.sidebar.write(st.session_state["mode"].get("create", dict()).get("prompt", "None")
+st.sidebar.write(st.session_state["mode"].get("mask", dict()).get("prompt", "None")
+st.sidebar.write(st.session_state["mode"].get("edit", dict()).get("prompt", "None")
 
 # mask = Image.new("L", im_base.size, 255)
 # draw = ImageDraw.Draw(mask)
