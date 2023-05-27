@@ -15,7 +15,12 @@ if "mask" not in st.session_state:
     st.session_state["mask"] = {"is_img": False, "img": im_init}
 if "edit" not in st.session_state:
     st.session_state["edit"] = {"is_img": False, "img": im_init}
-    
+
+def image_to_bytes(img):
+    img_bytes = io.BytesIO()
+    img.save(img_bytes, format='PNG')
+    return img_bytes.getvalue()
+
 def image_create(prompt):
     response = openai.Image.create(
         prompt=prompt,
@@ -28,9 +33,11 @@ def image_create(prompt):
     return im_create
 
 def image_edit(prompt):
+    create_bytes = image_to_bytes(st.session_state["create"]["img"])
+    mask_bytes = image_to_bytes(st.session_state["mask"]["img"])
     response = openai.Image.create_edit(
-        image = st.session_state["create"]["img"],
-        mask = st.session_state["mask"]["img"],
+        image = create_bytes,
+        mask = mask_bytes,
         prompt = prompt,
         n=1,
         size='256x256'
