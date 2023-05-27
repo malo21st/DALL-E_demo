@@ -22,11 +22,11 @@ def image_create(prompt, size):
 
 prompt = st.sidebar.text_area('**prompt** (Required)', "", height=3)
 st.sidebar.markdown("**n** default:1 (Option)")
-size = st.radio("**size** default:1024x1024 (Option)",
+size = st.sidebar.radio("**size** default:1024x1024 (Option)",
                  ('256x256', '512x512', '1024x1024'), index=1)
 
 if prompt:
-    im_base = image_create(prompt)
+    im_base = image_create(prompt, size)
 st.image(im_base)
 
 # mask = Image.new("L", im_base.size, 255)
