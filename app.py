@@ -23,28 +23,23 @@ def image_create(prompt):
     )
     image_url = response['data'][0]['url']
     generated_image = requests.get(image_url).content  # download the image
-    with open("img/generated_image.png", "wb") as image_file:
-      image_file.write(generated_image)  # write the image to the file
-    im_base = Image.open("img/generated_image.png")
-    return im_base
+    im_create = Image.open(io.BytesIO(generated_image))
+    return im_create
 
 def image_edit(prompt):
     response = openai.Image.create_edit(
-      image = open("img/generated_image.png", "rb"),
-      mask = open("img_transparency.png", "rb"),
+      image = st.session_state["create"]["img"],
+      mask = st.session_state["mask"]["img"],
       prompt = prompt,
       n=1,
       size='256x256'
     )
     image_url = response['data'][0]['url']
-    generat_edit_image = requests.get(image_url).content  # download the image
-    with open("img/generat_edit_image.png", "wb") as image_file:
-        image_file.write(generat_edit_image)  # write the image to the file
-    im_edit = Image.open("img/generat_edit_image.png") 
+    generated_image = requests.get(image_url).content  # download the image
+    im_edit = Image.open(io.BytesIO(generated_image))
     return im_edit
 
 prompt_create = st.sidebar.text_input('**prompt** (Required)', "")
-
 if prompt_create:
     im_create = image_create(prompt_create)
     st.session_state["create"] = {"is_img": True, "img": im_create}
