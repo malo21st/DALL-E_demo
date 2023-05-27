@@ -27,7 +27,7 @@ size = st.sidebar.radio("**size** default:1024x1024 (Option)",
 
 if prompt:
     im_base = image_create(prompt, size)
-st.image(im_base)
+    st.image(im_base)
 
 # mask = Image.new("L", im_base.size, 255)
 # draw = ImageDraw.Draw(mask)
