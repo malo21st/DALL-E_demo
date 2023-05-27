@@ -47,13 +47,13 @@ def image_edit(prompt):
     im_edit = Image.open(io.BytesIO(generated_image))
     return im_edit
 
-prompt_create = st.sidebar.text_input('**prompt**', "")
+prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
 if st.session_state["create"]["is_img"] == False and prompt_create:
     im_create = image_create(prompt_create)
     st.session_state["create"] = {"is_img": True, "img": im_create}
 if st.session_state["create"]["is_img"]:
-    prompt_edit = st.sidebar.text_input('**prompt**', "")
+    prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if prompt_edit:
         im_edit = image_edit(prompt_edit)
         st.session_state["edit"] = {"is_img": True, "img": im_edit}
