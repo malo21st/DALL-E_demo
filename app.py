@@ -17,7 +17,7 @@ def image_create(prompt):
     generated_image = requests.get(image_url).content  # download the image
     with open("img/generated_image.png", "wb") as image_file:
       image_file.write(generated_image)  # write the image to the file
-    im_base = Image.open("img/generated.png")
+    im_base = Image.open("img/generated_image.png")
     return im_base
 
 prompt = st.sidebar.text_input('**prompt** (Required)', "")
