@@ -6,6 +6,7 @@ import numpy as np
 
 OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
+im_init = Image.open("img_transparency.png")
 
 def image_create(prompt):
     response = openai.Image.create(
@@ -20,13 +21,29 @@ def image_create(prompt):
     im_base = Image.open("img/generated_image.png")
     return im_base
 
-prompt = st.sidebar.text_input('**prompt** (Required)', "")
-# size = st.sidebar.radio("**size** (Option)", index=1,
-#                         options=('256x256', '512x512', '1024x1024'))
-im_base = im_mask = im_edit = Image.open("img_transparency.png")
+def image_edit(prompt):
+    response = openai.Image.create_edit(
+      image = open("img/generated_image.png", "rb"),
+      mask = open("img_transparency.png", "rb"),
+      prompt = prompt,
+      n=1,
+      size='256x256'
+    )
+    image_url = response['data'][0]['url']
+    generat_edit_image = requests.get(image_url).content  # download the image
+    with open("img/generat_edit_image.png", "wb") as image_file:
+        image_file.write(generat_edit_image)  # write the image to the file
+    im_edit = Image.open("img/generat_edit_image.png") 
+    return im_edit
+
+prompt_create = st.sidebar.text_input('**prompt** (Required)', "")
+
+im_base = im_mask = im_edit = im_init
 if prompt:
-    im_base = image_create(prompt)
-#     st.image(im_base)
+    im_base = image_create(prompt_create)
+if im_base != im_init:
+    prompt_edit = st.sidebar.text_input('**prompt**', "")
+    im_edit = image_edit(prompt_edit)
 
 col1, col2, col3 = st.columns(3)
 with col1:
