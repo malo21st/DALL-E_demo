@@ -21,7 +21,8 @@ def image_create(prompt):
     return im_base
 
 prompt = st.sidebar.text_area('**prompt** (Required)', "", height=3)
-im_base = image_create(prompt)
+if prompt:
+    im_base = image_create(prompt)
 st.image(im_base)
 
 # mask = Image.new("L", im_base.size, 255)
