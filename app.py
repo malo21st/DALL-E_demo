@@ -23,7 +23,7 @@ def image_create(prompt):
 prompt = st.sidebar.text_input('**prompt** (Required)', "")
 # size = st.sidebar.radio("**size** (Option)", index=1,
 #                         options=('256x256', '512x512', '1024x1024'))
-im_base = im_mask = im_base = Image.open("img_transparency.png")
+im_base = im_mask = im_edit = Image.open("img_transparency.png")
 if prompt:
     im_base = image_create(prompt)
 #     st.image(im_base)
