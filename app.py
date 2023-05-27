@@ -3,6 +3,7 @@ import openai
 import requests
 from PIL import Image, ImageDraw
 import numpy as np
+import io
 
 OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
