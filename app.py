@@ -52,7 +52,7 @@ prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 if st.session_state["create"]["is_first"] and prompt_create:
     im_create = image_create(prompt_create)
     st.session_state["create"] = {"is_first": False, "img": im_create}
-if st.session_state["edit"]["is_first"]:
+if st.session_state["edit"]["is_first"] and not st.session_state["create"]["is_first"]:
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if prompt_edit:
         im_edit = image_edit(prompt_edit)
