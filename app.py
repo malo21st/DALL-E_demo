@@ -68,6 +68,10 @@ with col2:
 with col3:
    st.header("Edit")
    st.image(st.session_state["edit"]["img"])
+    
+st.sidebar.write(st.session_state["create"]["is_first"])
+st.sidebar.write(st.session_state["mask"]["is_first"])
+st.sidebar.write(st.session_state["edit"]["is_first"])
 
 # mask = Image.new("L", im_base.size, 255)
 # draw = ImageDraw.Draw(mask)
