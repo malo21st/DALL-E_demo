@@ -8,6 +8,13 @@ OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
 im_init = Image.open("img_transparency.png")
 
+if "create" not in st.session_state:
+    st.session_state["create"] = {"is_img": False, "img": im_init}
+if "mask" not in st.session_state:
+    st.session_state["mask"] = {"is_img": False, "img": im_init}
+if "edit" not in st.session_state:
+    st.session_state["edit"] = {"is_img": False, "img": im_init}
+    
 def image_create(prompt):
     response = openai.Image.create(
     prompt=prompt,
@@ -38,24 +45,25 @@ def image_edit(prompt):
 
 prompt_create = st.sidebar.text_input('**prompt** (Required)', "")
 
-im_base = im_mask = im_edit = im_init
 if prompt_create:
-    im_base = image_create(prompt_create)
-if im_base != im_init:
+    im_create = image_create(prompt_create)
+    st.session_state["create"] = {"is_img": True, "img": im_create}
+if st.session_state["create"]["is_img"]:
     prompt_edit = st.sidebar.text_input('**prompt**', "")
     if prompt_edit:
         im_edit = image_edit(prompt_edit)
+        st.session_state["edit"] = {"is_img": True, "img": im_edit}
 
 col1, col2, col3 = st.columns(3)
 with col1:
-   st.header("Base")
-   st.image(im_base)
+   st.header("Create")
+   st.image(st.session_state["create"]["img"])
 with col2:
    st.header("Mask")
-   st.image(im_mask)
+   st.image(st.session_state["mask"]["img"])
 with col3:
    st.header("Edit")
-   st.image(im_edit)
+   st.image(st.session_state["edit"]["img"])
 
 # mask = Image.new("L", im_base.size, 255)
 # draw = ImageDraw.Draw(mask)
