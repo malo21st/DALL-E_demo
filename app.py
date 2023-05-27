@@ -17,13 +17,13 @@ def image_create(prompt):
     generated_image = requests.get(image_url).content  # download the image
     with open("img/generated_image.png", "wb") as image_file:
       image_file.write(generated_image)  # write the image to the file
-    im_base = Image.open("img/generated_image.png") 
+    im_base = Image.open("img/generated.png")
     return im_base
 
 prompt = st.sidebar.text_input('**prompt** (Required)', "")
 # size = st.sidebar.radio("**size** (Option)", index=1,
 #                         options=('256x256', '512x512', '1024x1024'))
-im_base = im_mask = im_base = st.empty()
+im_base = im_mask = im_base = Image.open("img_transparency.png")
 if prompt:
     im_base = image_create(prompt)
 #     st.image(im_base)
