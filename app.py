@@ -47,8 +47,9 @@ def image_edit(prompt):
     im_edit = Image.open(io.BytesIO(generated_image))
     return im_edit
 
-prompt_create = st.sidebar.text_input('**prompt** (Required)', "")
-if prompt_create:
+prompt_create = st.sidebar.text_input('**prompt**', "")
+
+if st.session_state["create"]["is_img"] == False:
     im_create = image_create(prompt_create)
     st.session_state["create"] = {"is_img": True, "img": im_create}
 if st.session_state["create"]["is_img"]:
