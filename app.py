@@ -39,11 +39,12 @@ def image_edit(prompt):
 prompt_create = st.sidebar.text_input('**prompt** (Required)', "")
 
 im_base = im_mask = im_edit = im_init
-if prompt:
+if prompt_create:
     im_base = image_create(prompt_create)
 if im_base != im_init:
     prompt_edit = st.sidebar.text_input('**prompt**', "")
-    im_edit = image_edit(prompt_edit)
+    if prompt_edit:
+        im_edit = image_edit(prompt_edit)
 
 col1, col2, col3 = st.columns(3)
 with col1:
