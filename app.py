@@ -30,6 +30,7 @@ def image_create(prompt):
     image_url = response['data'][0]['url']
     generated_image = requests.get(image_url).content  # download the image
     im_create = Image.open(io.BytesIO(generated_image))
+    im_create.putalpha(alpha=255)
     return im_create
 
 def image_edit(prompt):
