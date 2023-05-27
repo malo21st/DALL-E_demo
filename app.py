@@ -10,11 +10,11 @@ openai.api_key = OPENAI_API_KEY
 im_init = Image.open("img_transparency.png")
 
 if "create" not in st.session_state:
-    st.session_state["create"] = {"is_img": False, "img": im_init}
+    st.session_state["create"] = {"is_first": True, "img": im_init}
 if "mask" not in st.session_state:
-    st.session_state["mask"] = {"is_img": False, "img": im_init}
+    st.session_state["mask"] = {"is_first": True, "img": im_init}
 if "edit" not in st.session_state:
-    st.session_state["edit"] = {"is_img": False, "img": im_init}
+    st.session_state["edit"] = {"is_first": True, "img": im_init}
 
 def image_to_bytes(img):
     img_bytes = io.BytesIO()
@@ -49,14 +49,14 @@ def image_edit(prompt):
 
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
-if st.session_state["create"]["is_img"] == False and prompt_create == "":
+if st.session_state["create"]["is_first"] and prompt_create:
     im_create = image_create(prompt_create)
-    st.session_state["create"] = {"is_img": True, "img": im_create}
-if st.session_state["create"]["is_img"]:
+    st.session_state["create"] = {"is_first": False, "img": im_create}
+if st.session_state["edit"]["is_first"]:
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if prompt_edit:
         im_edit = image_edit(prompt_edit)
-        st.session_state["edit"] = {"is_img": True, "img": im_edit}
+        st.session_state["edit"] = {"is_first": False, "img": im_edit}
 
 col1, col2, col3 = st.columns(3)
 with col1:
