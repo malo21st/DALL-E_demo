@@ -49,7 +49,7 @@ def image_edit(prompt):
 
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
-if st.session_state["create"]["is_img"] == False and prompt_create:
+if st.session_state["create"]["is_img"] == False and prompt_create == "":
     im_create = image_create(prompt_create)
     st.session_state["create"] = {"is_img": True, "img": im_create}
 if st.session_state["create"]["is_img"]:
