@@ -7,11 +7,11 @@ import numpy as np
 OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
 
-def image_create(prompt, size):
+def image_create(prompt):
     response = openai.Image.create(
     prompt=prompt,
     n=1,
-    size=size
+    size='256x256'
     )
     image_url = response['data'][0]['url']
     generated_image = requests.get(image_url).content  # download the image
@@ -21,12 +21,23 @@ def image_create(prompt, size):
     return im_base
 
 prompt = st.sidebar.text_input('**prompt** (Required)', "")
-size = st.sidebar.radio("**size** (Option)", index=1,
-                        options=('256x256', '512x512', '1024x1024'))
-
+# size = st.sidebar.radio("**size** (Option)", index=1,
+#                         options=('256x256', '512x512', '1024x1024'))
+im_base = im_mask = im_base = st.empty()
 if prompt:
-    im_base = image_create(prompt, size)
-    st.image(im_base)
+    im_base = image_create(prompt)
+#     st.image(im_base)
+
+col1, col2, col3 = st.columns(3)
+with col1:
+   st.header("Base")
+   st.image(im_base)
+with col2:
+   st.header("Mask")
+   st.image(im_mask)
+with col3:
+   st.header("Edit")
+   st.image(im_edit)
 
 # mask = Image.new("L", im_base.size, 255)
 # draw = ImageDraw.Draw(mask)
@@ -50,14 +61,3 @@ if prompt:
 #     image_file.write(generat_edit_image)  # write the image to the file
 # im_edit = Image.open("img/generat_edit_image.png") 
 # st.image(im_edit)
-
-# col1, col2, col3 = st.columns(3)
-# with col1:
-#    st.header("Base")
-#    st.image(im_base)
-# with col2:
-#    st.header("Mask")
-#    st.image(im_mask)
-# with col3:
-#    st.header("Edit")
-#    st.image(im_edit)
