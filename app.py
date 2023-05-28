@@ -45,6 +45,22 @@ def image_edit(prompt):
     im_edit = Image.open(io.BytesIO(generated_image))
     return im_edit
 
+def image_variation():
+    im_edit = st.session_state["mode"].get("edit", dict()).get("img", im_init)
+    edit_bytes = image_to_bytes(im_edit)
+    response = openai.Image.create_variation(
+        image = edit_bytes,
+        n=3,
+        size='256x256'
+    )
+    image_data_lst = response['data']
+    im_variation_lst = list()
+    for _, image_data in image_data_lst:
+        variation_image = requests.get(image_data['url']).content  # download the image
+        im_variation = Image.open(io.BytesIO(variation_image))
+        im_variation_lst.append(im_variation)
+    return im_variation_lst
+    
 def image_mask(im_base):
     mask = Image.new("L", im_base.size, 255)
     draw = ImageDraw.Draw(mask)
