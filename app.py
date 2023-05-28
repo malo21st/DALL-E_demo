@@ -81,6 +81,10 @@ if st.session_state["mode"].get("create", dict()).get("img", False):
         st.session_state["mode"]["mask"] = {"img": im_mask}
         im_edit = image_edit(prompt_edit)
         st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
+    if st.session_state["mode"]["edit"].get("img", False):
+        if st.sidebar.button("**Valiation 3 pics**"):
+            im_variation_lst = image_variation()
+            st.session_state["mode"]["variation"] = {"img_lst": im_variation_lst}
 
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -92,7 +96,19 @@ with col2:
 with col3:
    st.header("Edit")
    st.image(st.session_state["mode"].get("edit", dict()).get("img", im_init))
-    
+
+if st.session_state["mode"]["variation"].get("img_lst", False):
+    col4, col5, col6 = st.columns(3)
+    with col4:
+       st.header("Variation 1")
+       st.image(st.session_state["mode"]["variation"]["img_lst"][0])
+    with col5:
+       st.header("Variation 2")
+       st.image(st.session_state["mode"]["variation"]["img_lst"][1])
+    with col6:
+       st.header("Variation 3")
+       st.image(st.session_state["mode"]["variation"]["img_lst"][2])
+
 # st.sidebar.write(st.session_state["mode"].get("create", dict()).get("prompt", "None"))
 # st.sidebar.write(st.session_state["mode"].get("mask", dict()).get("prompt", "None"))
 # st.sidebar.write(st.session_state["mode"].get("edit", dict()).get("prompt", "None"))
