@@ -50,7 +50,7 @@ def image_mask(im_base):
     draw.ellipse((78, 78, 178, 178), fill=0)
     im_array = np.dstack((im_base, mask))
     st.sidebar.write(im_array.shape)
-    im_array = im_array.astype(np.uint8)
+    im_array = (im_array * 255).astype(np.uint8)
     im_mask = Image.fromarray(im_array)
     return im_mask
     
