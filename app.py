@@ -74,9 +74,9 @@ with col3:
    st.header("Edit")
    st.image(st.session_state["mode"].get("edit", dict()).get("img", im_init))
     
-st.sidebar.write(st.session_state["mode"].get("create", dict()).get("prompt", "None")
-st.sidebar.write(st.session_state["mode"].get("mask", dict()).get("prompt", "None")
-st.sidebar.write(st.session_state["mode"].get("edit", dict()).get("prompt", "None")
+st.sidebar.write(st.session_state["mode"].get("create", dict()).get("prompt", "None"))
+st.sidebar.write(st.session_state["mode"].get("mask", dict()).get("prompt", "None"))
+st.sidebar.write(st.session_state["mode"].get("edit", dict()).get("prompt", "None"))
 
 # mask = Image.new("L", im_base.size, 255)
 # draw = ImageDraw.Draw(mask)
