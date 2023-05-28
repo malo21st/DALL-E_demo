@@ -42,7 +42,7 @@ def image_edit(prompt):
     mask_bytes = image_to_bytes(st.session_state["mode"].get("mask", dict()).get("img", im_init))
     response = openai.Image.create_edit(
         image = create_bytes,
-        mask = mask_bytes,
+#         mask = mask_bytes,
         prompt = prompt,
         n=1,
         size='256x256'
