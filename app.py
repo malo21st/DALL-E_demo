@@ -97,7 +97,7 @@ with col3:
    st.header("Edit")
    st.image(st.session_state["mode"].get("edit", dict()).get("img", im_init))
 
-if st.session_state["mode"]["variation"].get("img_lst", False):
+if st.session_state["mode"].get("variation", dict()).get("img_lst", False):
     col4, col5, col6 = st.columns(3)
     with col4:
        st.header("Variation 1")
