@@ -48,9 +48,10 @@ def image_mask(im_base):
     mask = Image.new("L", im_base.size, 255)
     draw = ImageDraw.Draw(mask)
     draw.ellipse((78, 78, 178, 178), fill=0)
-    image_transparency = np.dstack((im_base, mask))
-    st.sidebar.write(image_transparency.shape)
-    im_mask = Image.fromarray(image_transparency)
+    im_array = np.dstack((im_base, mask))
+    st.sidebar.write(im_array.shape)
+    im_array = (im_array[0] + 1) / 2.0 * 255
+    im_mask = Image.fromarray(im_array)
     return im_mask
     
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
