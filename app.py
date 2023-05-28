@@ -74,6 +74,7 @@ prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
     im_create = image_create(prompt_create)
     st.session_state["mode"]["create"] = {"prompt": prompt_create, "img": im_create}
+    del st.session_state["mode"]["mask"], st.session_state["mode"]["edit"], st.session_state["mode"]["variation"]
 if st.session_state["mode"].get("create", dict()).get("img", False):
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if prompt_edit and not st.session_state["mode"].get("variation", False):
