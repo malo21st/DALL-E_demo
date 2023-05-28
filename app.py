@@ -39,10 +39,10 @@ def image_create(prompt):
 
 def image_edit(prompt):
     create_bytes = image_to_bytes(st.session_state["mode"].get("create", dict()).get("img", im_init))
-    mask_bytes = image_to_bytes(st.session_state["mode"].get("create", dict()).get("img", im_init))
+    mask_bytes = image_to_bytes(st.session_state["mode"].get("mask", dict()).get("img", im_init))
     response = openai.Image.create_edit(
         image = create_bytes,
-#         mask = mask_bytes,
+        mask = mask_bytes,
         prompt = prompt,
         n=1,
         size='256x256'
@@ -52,6 +52,13 @@ def image_edit(prompt):
     im_edit = Image.open(io.BytesIO(generated_image))
     return im_edit
 
+def image_mask():
+    mask = Image.new("L", im_base.size, 255)
+    draw = ImageDraw.Draw(mask)
+    draw.ellipse((78, 78, 178, 178), fill=0)
+    image_with_transparency = np.dstack((im_base, mask))
+    return Image.fromarray(image_with_transparency)
+    
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
 if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
@@ -60,6 +67,8 @@ if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_cr
 if st.session_state["mode"].get("create", dict()).get("img", False):
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if prompt_edit:
+        im_mask = image_mask():
+        st.session_state["mode"]["mask"] = {"img": im_mask}
         im_edit = image_edit(prompt_edit)
         st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
 
