@@ -8,7 +8,7 @@ import io
 OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
 im_init = Image.open("img_transparency.png")
-im_init_bytes = open("img_transparency.png", "rb")
+# im_init_bytes = open("img_transparency.png", "rb")
 
 if "mode" not in st.session_state:
     st.session_state["mode"] = dict()
@@ -38,8 +38,8 @@ def image_create(prompt):
     return im_create
 
 def image_edit(prompt):
-    create_bytes = st.session_state["mode"].get("create", dict()).get("img", im_init_bytes)
-    mask_bytes = st.session_state["mode"].get("mask", dict()).get("img", im_init_bytes)
+    create_bytes = image_to_bytes(st.session_state["mode"].get("create", dict()).get("img", im_init))
+    mask_bytes = image_to_bytes(st.session_state["mode"].get("mask", dict()).get("img", im_init))
     response = openai.Image.create_edit(
         image = create_bytes,
         mask = mask_bytes,
