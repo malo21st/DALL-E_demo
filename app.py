@@ -57,11 +57,11 @@ prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
     im_create = image_create(prompt_create)
     st.session_state["mode"]["create"] = {"prompt": prompt_create, "img": im_create}
-    if st.session_state["mode"].get("create", dict()).get("img", False):
-        prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
-        if prompt_edit:
-            im_edit = image_edit(prompt_edit)
-            st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
+if st.session_state["mode"].get("create", dict()).get("img", False):
+    prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
+    if prompt_edit:
+        im_edit = image_edit(prompt_edit)
+        st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
 
 col1, col2, col3 = st.columns(3)
 with col1:
