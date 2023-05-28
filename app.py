@@ -30,7 +30,7 @@ def image_create(prompt):
 
 def image_edit(prompt):
     im_create_a = st.session_state["mode"].get("create", dict()).get("img", im_init)
-    im_create_a.putalpha(alpha=255)
+#     im_create_a.putalpha(alpha=255)
     create_bytes = image_to_bytes(im_create_a)
     mask_bytes = image_to_bytes(st.session_state["mode"].get("mask", dict()).get("img", im_init))
     response = openai.Image.create_edit(
