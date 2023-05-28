@@ -49,7 +49,7 @@ def image_mask(im_base):
     draw = ImageDraw.Draw(mask)
     draw.ellipse((78, 78, 178, 178), fill=0)
     image_transparency = np.dstack((im_base, mask))
-    im_mask = Image.fromarray(image_transparency.astype(np.uint8))
+    im_mask = Image.fromarray((image_transparency * 1).astype(np.uint8)).convert("RGBA")
     return im_mask
     
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
