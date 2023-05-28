@@ -8,17 +8,9 @@ import io
 OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
 im_init = Image.open("img_transparency.png")
-# im_init_bytes = open("img_transparency.png", "rb")
 
 if "mode" not in st.session_state:
     st.session_state["mode"] = dict()
-
-# if "create" not in st.session_state:
-#     st.session_state["create"] = {"is_first": True, "img": im_init}
-# if "mask" not in st.session_state:
-#     st.session_state["mask"] = {"is_first": True, "img": im_init}
-# if "edit" not in st.session_state:
-#     st.session_state["edit"] = {"is_first": True, "img": im_init}
 
 def image_to_bytes(img):
     img_bytes = io.BytesIO()
@@ -56,8 +48,9 @@ def image_mask(im_base):
     mask = Image.new("L", im_base.size, 255)
     draw = ImageDraw.Draw(mask)
     draw.ellipse((78, 78, 178, 178), fill=0)
-    image_with_transparency = np.dstack((im_base, mask))
-    return Image.fromarray(image_with_transparency)
+    image_transparency = np.dstack((im_base, mask))
+    im_mask = Image.fromarray(image_transparency)
+    return im_mask
     
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
@@ -86,26 +79,3 @@ with col3:
 st.sidebar.write(st.session_state["mode"].get("create", dict()).get("prompt", "None"))
 st.sidebar.write(st.session_state["mode"].get("mask", dict()).get("prompt", "None"))
 st.sidebar.write(st.session_state["mode"].get("edit", dict()).get("prompt", "None"))
-
-# mask = Image.new("L", im_base.size, 255)
-# draw = ImageDraw.Draw(mask)
-# draw.ellipse((40, 50, 160, 170), fill=0)
-# image_with_transparency = np.dstack((im_base, mask))
-# im_mask = Image.fromarray(image_with_transparency)
-# im_mask.save('img/mask_image.png')
-# st.image(im_mask)
-
-
-# response = openai.Image.create_edit(
-#   image = open("img/generated_image.png", "rb"),
-#   mask = open("img/mask_image.png", "rb"),
-#   prompt = "UFOが飛んでいる",
-#   n=1,
-#   size="512x512"
-# )
-# image_url = response['data'][0]['url']
-# generat_edit_image = requests.get(image_url).content  # download the image
-# with open("img/generat_edit_image.png", "wb") as image_file:
-#     image_file.write(generat_edit_image)  # write the image to the file
-# im_edit = Image.open("img/generat_edit_image.png") 
-# st.image(im_edit)
