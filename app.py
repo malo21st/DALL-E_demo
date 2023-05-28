@@ -26,11 +26,11 @@ def image_create(prompt):
     image_url = response['data'][0]['url']
     generated_image = requests.get(image_url).content  # download the image
     im_create = Image.open(io.BytesIO(generated_image))
-    im_create
     return im_create
 
 def image_edit(prompt):
-    im_create_a = st.session_state["mode"].get("create", dict()).get("img", im_init).putalpha(alpha=255)
+    im_create_a = st.session_state["mode"].get("create", dict()).get("img", im_init)
+    im_create_a.putalpha(alpha=255)
     create_bytes = image_to_bytes(im_create_a)
     mask_bytes = image_to_bytes(st.session_state["mode"].get("mask", dict()).get("img", im_init))
     response = openai.Image.create_edit(
@@ -51,7 +51,7 @@ def image_mask(im_base):
     draw.ellipse((78, 78, 178, 178), fill=0)
     im_array = np.dstack((im_base, mask))
     st.sidebar.write(im_array)
-    im_array = im_array.astype(np.uint8)
+#     im_array = im_array.astype(np.uint8)
     im_mask = Image.fromarray(im_array)
     return im_mask
     
