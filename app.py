@@ -52,7 +52,7 @@ def image_edit(prompt):
     im_edit = Image.open(io.BytesIO(generated_image))
     return im_edit
 
-def image_mask():
+def image_mask(im_base):
     mask = Image.new("L", im_base.size, 255)
     draw = ImageDraw.Draw(mask)
     draw.ellipse((78, 78, 178, 178), fill=0)
@@ -67,7 +67,7 @@ if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_cr
 if st.session_state["mode"].get("create", dict()).get("img", False):
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if prompt_edit:
-        im_mask = image_mask()
+        im_mask = image_mask(st.session_state["mode"]["create"]["img"])
         st.session_state["mode"]["mask"] = {"img": im_mask}
         im_edit = image_edit(prompt_edit)
         st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
