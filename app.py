@@ -81,7 +81,7 @@ if st.session_state["mode"].get("create", dict()).get("img", False):
         st.session_state["mode"]["mask"] = {"img": im_mask}
         im_edit = image_edit(prompt_edit)
         st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
-    if st.session_state["mode"]["edit"].get("img", False):
+    if st.session_state["mode"].get("edit", dict()).get("img", False):
         if st.sidebar.button("**Valiation 3 pics**"):
             im_variation_lst = image_variation()
             st.session_state["mode"]["variation"] = {"img_lst": im_variation_lst}
