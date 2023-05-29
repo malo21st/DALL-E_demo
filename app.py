@@ -73,8 +73,8 @@ def image_mask(im_base):
 st.sidebar.title("DALL-E Demo")
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 mask_upper = st.sidebar.radio("**mask**", ("UL", "UM", "UR"), horizontal=True)
-mask_middle = st.sidebar.radio(("ML", "MM", "MR"), horizontal=True, label_visibility="hidden")
-mask_lower = st.sidebar.radio(("LL", "LM", "LR"), horizontal=True, label_visibility="hidden")
+mask_middle = st.sidebar.radio("", ("ML", "MM", "MR"), horizontal=True, label_visibility="hidden")
+mask_lower = st.sidebar.radio("", ("LL", "LM", "LR"), horizontal=True, label_visibility="hidden")
 
 if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
     im_create = image_create(prompt_create)
