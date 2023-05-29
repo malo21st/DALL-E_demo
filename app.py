@@ -73,7 +73,7 @@ def image_mask(im_base):
 st.sidebar.title("DALL-E Demo")
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 mask_upper = st.sidebar.selectbox("**mask**",
-                                  ("UL", "UM", "UR", "ML", "MM", "MR", "LL", "LM", "LR"),
+                                  ("左上", "上", "右上", "左", "中", "右", "左下", "下", "右下"),
                                   index=4)
 
 if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
