@@ -68,7 +68,9 @@ def image_mask(im_base):
     im_array = np.dstack((im_base, mask))
     im_mask = Image.fromarray(im_array)
     return im_mask
-    
+
+# Sidebar
+st.sidebar.title("DALL-E Demo")
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
 if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
