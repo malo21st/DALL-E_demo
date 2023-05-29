@@ -68,6 +68,7 @@ def image_variation():
     
 def image_mask(im_base, pos):
     x, y = pos
+    im_base.putalpha(alpha=255)
     mask = Image.new("L", im_base.size, 55)
     draw = ImageDraw.Draw(mask)
     draw.ellipse((x, y, x+75, y+75), fill=0)
