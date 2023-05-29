@@ -66,10 +66,11 @@ def image_variation():
         im_variation_lst.append(im_variation)
     return im_variation_lst
     
-def image_mask(im_base):
-    mask = Image.new("L", im_base.size, 255)
+def image_mask(im_base, pos):
+    x, y = pos
+    mask = Image.new("L", im_base.size, 55)
     draw = ImageDraw.Draw(mask)
-    draw.ellipse((78, 78, 178, 178), fill=0)
+    draw.ellipse((x, y, x+75, y+75), fill=0)
     im_array = np.dstack((im_base, mask))
     im_mask = Image.fromarray(im_array)
     return im_mask
@@ -77,7 +78,8 @@ def image_mask(im_base):
 # Sidebar
 st.sidebar.title("DALL-E Demo")
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
-mask_upper = st.sidebar.selectbox("**mask**", pos.keys(), index=4)
+mask_pos = st.sidebar.selectbox("**mask**", pos.keys(), index=4)
+im_mask = image_mask(im_init, pos[mask_pos])
 
 if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
     im_create = image_create(prompt_create)
@@ -86,7 +88,7 @@ if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_cr
 if st.session_state["mode"].get("create", dict()).get("img", False):
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if prompt_edit and not st.session_state["mode"].get("variation", False):
-        im_mask = image_mask(st.session_state["mode"]["create"]["img"])
+#         im_mask = image_mask(st.session_state["mode"]["create"]["img"])
         st.session_state["mode"]["mask"] = {"img": im_mask}
         im_edit = image_edit(prompt_edit)
         st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
@@ -97,14 +99,15 @@ if st.session_state["mode"].get("create", dict()).get("img", False):
 
 col1, col2, col3 = st.columns(3)
 with col1:
-   st.header("Create")
-   st.image(st.session_state["mode"].get("create", dict()).get("img", im_init))
+    st.header("Create")
+    st.image(st.session_state["mode"].get("create", dict()).get("img", im_init))
 with col2:
-   st.header("Mask")
-   st.image(st.session_state["mode"].get("mask", dict()).get("img", im_init))
+    st.header("Mask")
+    st.image(im_mask)
+#    st.image(st.session_state["mode"].get("mask", dict()).get("img", im_init))
 with col3:
-   st.header("Edit")
-   st.image(st.session_state["mode"].get("edit", dict()).get("img", im_init))
+    st.header("Edit")
+    st.image(st.session_state["mode"].get("edit", dict()).get("img", im_init))
 
 if st.session_state["mode"].get("variation", dict()).get("img_lst", False):
     col4, col5, col6 = st.columns(3)
