@@ -9,6 +9,11 @@ OPENAI_API_KEY = st.secrets.openai_api_key
 openai.api_key = OPENAI_API_KEY
 im_init = Image.open("img_transparency.png")
 
+pos = {"左上": (5,5), "上": (90,5), "右上":(175,5),
+       "左": (5,90), "中": (90,90), "右": (175,90),
+       "左下": (5, 175), "下": (90,175), "右下": (175,175)
+      }
+
 if "mode" not in st.session_state:
     st.session_state["mode"] = dict()
 
@@ -72,9 +77,7 @@ def image_mask(im_base):
 # Sidebar
 st.sidebar.title("DALL-E Demo")
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
-mask_upper = st.sidebar.selectbox("**mask**",
-                                  ("左上", "上", "右上", "左", "中", "右", "左下", "下", "右下"),
-                                  index=4)
+mask_upper = st.sidebar.selectbox("**mask**", pos.keys(), index=4)
 
 if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
     im_create = image_create(prompt_create)
