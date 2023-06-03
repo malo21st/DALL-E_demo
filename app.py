@@ -35,7 +35,6 @@ def image_create(prompt):
 
 def image_edit(prompt):
     im_create_a = st.session_state["mode"].get("create", dict()).get("img", im_init)
-#     im_create_a.putalpha(alpha=255)
     create_bytes = image_to_bytes(im_create_a)
     mask_bytes = image_to_bytes(st.session_state["mode"].get("mask", dict()).get("img", im_init))
     response = openai.Image.create_edit(
@@ -87,7 +86,7 @@ if st.session_state["mode"].get("create", dict()).get("img", False):
     im_mask = image_mask(st.session_state["mode"]["create"]["img"], pos[mask_pos])
     st.session_state["mode"]["mask"] = {"img": im_mask}
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', prompt_create)
-    if st.sidebar.button("**Edits**"):
+    if st.sidebar.button("**Edit**"):
         im_edit = image_edit(prompt_edit)
         st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
     if st.session_state["mode"].get("edit", dict()).get("img", False):
