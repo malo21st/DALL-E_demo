@@ -79,10 +79,8 @@ def image_mask(im_base, pos):
 st.sidebar.title("DALL-E Demo")
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
-# if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
 if st.sidebar.button("**Create**"):
     im_create = image_create(prompt_create)
-#     st.session_state["mode"]
     st.session_state["mode"]["create"] = {"prompt": prompt_create, "img": im_create}
 if st.session_state["mode"].get("create", dict()).get("img", False):
     mask_pos = st.sidebar.selectbox("**mask**", pos.keys(), index=4)
@@ -90,7 +88,6 @@ if st.session_state["mode"].get("create", dict()).get("img", False):
     st.session_state["mode"]["mask"] = {"img": im_mask}
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
     if st.sidebar.button("**Edits**"):
-#     if prompt_edit and not st.session_state["mode"].get("variation", False):
         im_edit = image_edit(prompt_edit)
         st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
     if st.session_state["mode"].get("edit", dict()).get("img", False):
@@ -120,7 +117,3 @@ if st.session_state["mode"].get("variation", dict()).get("img_lst", False):
     with col6:
        st.header("Variation 3")
        st.image(st.session_state["mode"]["variation"]["img_lst"][2])
-
-# st.sidebar.write(st.session_state["mode"].get("create", dict()).get("prompt", "None"))
-# st.sidebar.write(st.session_state["mode"].get("mask", dict()).get("prompt", "None"))
-# st.sidebar.write(st.session_state["mode"].get("edit", dict()).get("prompt", "None"))
