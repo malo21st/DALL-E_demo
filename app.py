@@ -50,12 +50,12 @@ def image_edit(prompt):
     im_edit = Image.open(io.BytesIO(generated_image))
     return im_edit
 
-def image_variation():
+def image_variation(n):
     im_edit = st.session_state["mode"].get("edit", dict()).get("img", im_init)
     edit_bytes = image_to_bytes(im_edit)
     response = openai.Image.create_variation(
         image = edit_bytes,
-        n=3,
+        n = n,
         size='256x256'
     )
     image_data_lst = response['data']
@@ -89,13 +89,13 @@ if st.session_state["mode"].get("create", dict()).get("img", False):
     im_mask = image_mask(st.session_state["mode"]["create"]["img"], pos[mask_pos])
     st.session_state["mode"]["mask"] = {"img": im_mask}
     prompt_edit = st.sidebar.text_input('**prompt (edit)**', "")
-    if st.sidebar.button("**Edit**"):
+    if st.sidebar.button("**Edits**"):
 #     if prompt_edit and not st.session_state["mode"].get("variation", False):
         im_edit = image_edit(prompt_edit)
         st.session_state["mode"]["edit"] = {"prompt": prompt_edit, "img": im_edit}
     if st.session_state["mode"].get("edit", dict()).get("img", False):
-        if st.sidebar.button("**Variation 3 images**"):
-            im_variation_lst = image_variation()
+        if st.sidebar.button("**Variation**"):
+            im_variation_lst = image_variation(3)
             st.session_state["mode"]["variation"] = {"img_lst": im_variation_lst}
 
 col1, col2, col3 = st.columns(3)
