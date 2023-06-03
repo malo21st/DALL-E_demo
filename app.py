@@ -79,11 +79,11 @@ def image_mask(im_base, pos):
 st.sidebar.title("DALL-E Demo")
 prompt_create = st.sidebar.text_input('**prompt (create)**', "")
 
-if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
-    if st.sidebar.button("**Create**"):
-        im_create = image_create(prompt_create)
-        st.session_state["mode"]
-        st.session_state["mode"]["create"] = {"prompt": prompt_create, "img": im_create}
+# if st.session_state["mode"].get("create", dict()).get("prompt", "") != prompt_create:
+if st.sidebar.button("**Create**"):
+    im_create = image_create(prompt_create)
+#     st.session_state["mode"]
+    st.session_state["mode"]["create"] = {"prompt": prompt_create, "img": im_create}
 if st.session_state["mode"].get("create", dict()).get("img", False):
     mask_pos = st.sidebar.selectbox("**mask**", pos.keys(), index=4)
     im_mask = image_mask(st.session_state["mode"]["create"]["img"], pos[mask_pos])
